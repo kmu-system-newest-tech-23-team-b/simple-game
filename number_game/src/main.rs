@@ -1,36 +1,40 @@
-extern crate rand;
-
 use std::io;
 use rand::Rng;
 
 fn main() {
+    println!("Guess the number!");
     let secret_number = rand::thread_rng().gen_range(1..=100);
-    
-    println!("Guess the number between 1 and 100!");
-    
+
+    let mut tries = 0;
     loop {
         let mut guess = String::new();
+        println!("Please input your guess (1-100).");
 
-        io::stdin().read_line(&mut guess)
+        io::stdin()
+            .read_line(&mut guess)
             .expect("Failed to read line");
 
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
-            Err(_) => {
-                println!("Please enter a valid number!");
-                continue;
-            }
+            Err(_) => continue,
         };
-        
+
+        tries += 1;
+
         println!("You guessed: {}", guess);
 
         match guess.cmp(&secret_number) {
             std::cmp::Ordering::Less => println!("Too small!"),
             std::cmp::Ordering::Greater => println!("Too big!"),
             std::cmp::Ordering::Equal => {
-                println!("You guessed the secret number! Congrats!");
+                println!("You win!");
                 break;
             }
+        }
+
+        if tries == 5 {
+            println!("You lose! The secret number was: {}", secret_number);
+            break;
         }
     }
 }
