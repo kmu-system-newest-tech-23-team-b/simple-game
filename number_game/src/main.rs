@@ -28,12 +28,20 @@ fn main() {
             std::cmp::Ordering::Greater => println!("Too big!"),
             std::cmp::Ordering::Equal => {
                 println!("You win!");
+                let score = match tries {
+                    1 => 10,
+                    2 => 8,
+                    3 => 5,
+                    _ => 3,
+                };
+                println!("Your score is: {}", score);
                 break;
             }
         }
 
         if tries == 5 {
             println!("You lose! The secret number was: {}", secret_number);
+            println!("Your score is: 0");
             break;
         }
     }
